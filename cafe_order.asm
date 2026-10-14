@@ -1,32 +1,45 @@
 
 ; BREW & BYTE - Cafe Bill Processor
-; GNUSim8085 Assembly Program
+; 8085 Assembly Language Program
 ;
-; Input:
-; 2050H = subtotal in rupees (8-bit unsigned value)
+; INPUT MEMORY LOCATIONS:
+; 2050H = Price of item 1
+; 2051H = Price of item 2
+; 2052H = Price of item 3
 ;
-; Output:
-; 2051H = discount (0AH if subtotal >= 64H, otherwise 00H)
-; 2052H = final payable amount
+; OUTPUT MEMORY LOCATIONS:
+; 2053H = Total bill
+; 2054H = Discount
+; 2055H = Final payable amount
 ;
-; Rule: Orders >= Rs.100 receive a fixed Rs.10 discount.
-; All values are hexadecimal in memory.
+; Rule: Bills of Rs.100 or more receive Rs.10 discount.
+; All values are stored in hexadecimal.
 
-        LDA 2050H       ; Load subtotal into accumulator
-        CPI 64H         ; Compare subtotal with 100 decimal
-        JC NO_DISCOUNT  ; If subtotal < 100, jump
+        LDA 2050H       ; Load first item price
+        MOV B,A         ; Save first price in register B
 
-        SUI 0AH         ; Deduct Rs.10 from subtotal
-        STA 2052H       ; Store final payable amount
+        LDA 2051H       ; Load second item price
+        ADD B           ; Add first price to second price
+        MOV B,A         ; Save running total in B
 
-        MVI A, 0AH      ; Load discount = 10 decimal
-        STA 2051H       ; Store discount
+        LDA 2052H       ; Load third item price
+        ADD B           ; Add third price to running total
+        STA 2053H       ; Store total bill
+
+        CPI 64H         ; Compare total with Rs.100
+        JC NO_DISCOUNT  ; Jump if total is below Rs.100
+
+        SUI 0AH         ; Subtract Rs.10 discount
+        STA 2055H       ; Store final payable amount
+
+        MVI A,0AH       ; Load discount value Rs.10
+        STA 2054H       ; Store discount
         HLT
 
 NO_DISCOUNT:
-        LDA 2050H       ; Reload original subtotal
-        STA 2052H       ; Payable amount = subtotal
+        LDA 2053H       ; Reload total bill
+        STA 2055H       ; Payable amount = total bill
 
-        MVI A, 00H      ; Load zero discount
-        STA 2051H       ; Store discount
+        MVI A,00H       ; Set discount to zero
+        STA 2054H       ; Store zero discount
         HLT
