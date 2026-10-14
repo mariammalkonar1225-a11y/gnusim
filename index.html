@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#30231e">
+  <title>Brew & Byte | Your Cozy Corner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <a class="logo" href="#home">☕ Brew & Byte</a>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#ambience">Cafe Vibes</a>
+    <a href="#menu">Menu</a>
+    <a href="#lab">8085 Lab</a>
+  </nav>
+  <button class="nav-cart" onclick="scrollToCart()">
+    🛍️ Cart <span id="cartCount">0</span>
+  </button>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="eyebrow">YOUR LITTLE ESCAPE</p>
+    <h1>Slow mornings.<br><span>Warm coffee.</span></h1>
+    <p>
+      Imagine rain on the windows, your favourite playlist,
+      and a cup of something warm. Welcome to your happy place.
+    </p>
+    <div class="hero-actions">
+      <a href="#ambience" class="primary-btn">Enter the cafe ↗</a>
+      <a href="#menu" class="text-link">Explore menu ↓</a>
+    </div>
+    <div class="hero-note">
+      <span class="status-dot"></span>
+      A little corner to relax, study and recharge
+    </div>
+  </div>
+
+  <div class="window-scene">
+    <div class="rain-window">
+      <div class="city-lights"></div>
+      <div class="rain-layer"></div>
+      <div class="window-cross horizontal"></div>
+      <div class="window-cross vertical"></div>
+      <div class="window-caption">
+        <span>YOUR LITTLE ESCAPE</span>
+        <strong>Rainy afternoon ☔</strong>
+      </div>
+    </div>
+    <div class="window-sill">
+      <span>☕</span><span>📚</span><span>🪴</span>
+    </div>
+    <div class="scene-caption">your seat is waiting ♡</div>
+  </div>
+</section>
+
+<section class="ambience-section" id="ambience">
+  <div class="ambience-heading">
+    <p class="eyebrow">YOUR VIBE, YOUR RULES</p>
+    <h2>Make yourself <span>at home.</span></h2>
+    <p>Mix the sounds, settle in, and let the world slow down for a bit.</p>
+  </div>
+
+  <div class="mixer">
+    <div class="mixer-top">
+      <div>
+        <span class="live-dot"></span>
+        <span class="mixer-label">YOUR AMBIENCE MIX</span>
+      </div>
+      <button class="sound-button" id="soundToggle" onclick="toggleSound()">
+        ▶ Start sounds
+      </button>
+    </div>
+
+    <div class="sound-grid">
+      <div class="sound-card">
+        <div class="sound-icon rain-icon">🌧️</div>
+        <div class="sound-info">
+          <strong>Rain on windows</strong>
+          <span>Soft rainy-day atmosphere</span>
+        </div>
+        <label class="volume-label" for="rainVolume">Volume</label>
+        <input id="rainVolume" type="range" min="0" max="100" value="45">
+        <div class="volume-footer"><span>Rain</span><span id="rainValue">45%</span></div>
+      </div>
+
+      <div class="sound-card">
+        <div class="sound-icon cafe-icon">☕</div>
+        <div class="sound-info">
+          <strong>Cafe atmosphere</strong>
+          <span>A gentle, warm background hum</span>
+        </div>
+        <label class="volume-label" for="cafeVolume">Volume</label>
+        <input id="cafeVolume" type="range" min="0" max="100" value="25">
+        <div class="volume-footer"><span>Cafe hum</span><span id="cafeValue">25%</span></div>
+      </div>
+
+      <div class="sound-card">
+        <div class="sound-icon music-icon">🎵</div>
+        <div class="sound-info">
+          <strong>Soft instrumental</strong>
+          <span>Gentle original electronic tones</span>
+        </div>
+        <label class="volume-label" for="musicVolume">Volume</label>
+        <input id="musicVolume" type="range" min="0" max="100" value="18">
+        <div class="volume-footer"><span>Music</span><span id="musicValue">18%</span></div>
+      </div>
+    </div>
+
+    <div class="mixer-bottom">
+      <p id="soundStatus" aria-live="polite">Your cafe is waiting. Press start to hear the ambience.</p>
+      <button class="mute-button" onclick="muteSounds()">Mute all</button>
+    </div>
+  </div>
+  <p class="audio-note">♡ Sounds are generated in your browser. Headphones recommended.</p>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">MADE FRESH, SERVED HAPPY</p>
+      <h2>Your cravings, <span>sorted.</span></h2>
+    </div>
+    <p>Something to sip, something to snack on, something just for you.</p>
+  </div>
+
+  <div class="filters">
+    <button class="filter active" onclick="filterMenu('All', this)">All</button>
+    <button class="filter" onclick="filterMenu('Coffee', this)">☕ Coffee</button>
+    <button class="filter" onclick="filterMenu('Cold', this)">🧊 Cold Drinks</button>
+    <button class="filter" onclick="filterMenu('Dessert', this)">🍰 Desserts</button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
+
+<section class="order-section" id="cart">
+  <div class="cart-panel">
+    <p class="eyebrow">YOUR LITTLE HAPPY BOX</p>
+    <h2>Your order <span>♡</span></h2>
+    <div id="cartItems">
+      <div class="empty-cart">🛍️<p>Your cart is waiting for something delicious.</p></div>
+    </div>
+
+    <div class="bill">
+      <div><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+      <div><span>Discount</span><strong id="discount">₹0</strong></div>
+      <div class="total"><span>Total to pay</span><strong id="total">₹0</strong></div>
+    </div>
+
+    <button class="primary-btn checkout-btn" onclick="checkout()">
+      Continue to payment →
+    </button>
+    <p class="secure-note">Choose your preferred payment method at checkout.</p>
+  </div>
+
+  <div class="order-message">
+    <p class="eyebrow">A LITTLE NOTE</p>
+    <h2>Good things<br>take <span>coffee.</span></h2>
+    <p>Your favourite drink, a rainy window and a moment for yourself. Sounds like a pretty good day.</p>
+    <div class="note-card">✨ Freshly made, always served with love.</div>
+  </div>
+</section>
+
+<section class="lab-section" id="lab">
+  <div class="lab-intro">
+    <p class="eyebrow">A LITTLE TECH MAGIC</p>
+    <h2>From coffee to <span>code.</span></h2>
+    <p>This website also showcases an 8085 bill-calculation example using assembly language and GNUSim8085.</p>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <span class="live-dot"></span>
+      8085 BILL PROCESSOR
+      <span class="lab-tag">GNUSim8085</span>
+    </div>
+    <div class="memory-row"><span>2050H · Subtotal</span><strong id="memSubtotal">00H</strong></div>
+    <div class="memory-row"><span>2051H · Discount</span><strong id="memDiscount">00H</strong></div>
+    <div class="memory-row"><span>2052H · Payable</span><strong id="memTotal">00H</strong></div>
+    <p class="lab-help">Values are hexadecimal. Run the assembly program separately in GNUSim8085.</p>
+    <button class="secondary-btn" onclick="prepare8085()">Prepare 8085 Example ↗</button>
+    <p id="labMessage" class="lab-message" aria-live="polite">Add items to prepare a bill example.</p>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="#home">☕ Brew & Byte</a>
+  <p>Made with ♡, coffee, rain and a little bit of code.</p>
+  <small>Freshly brewed moments, just for you.</small>
+</footer>
+
+<!-- CUSTOMER CHECKOUT -->
+<div id="paymentModal" class="payment-overlay" style="display:none;">
+  <div class="payment-box">
+    <button class="payment-close" onclick="closePayment()" aria-label="Close">×</button>
+    <p class="payment-label">BREW & BYTE</p>
+    <h2>Almost yours. ☕</h2>
+    <p class="payment-subtitle">Choose your preferred payment method.</p>
+
+    <div class="checkout-progress">
+      <span class="progress-done">✓ Order</span>
+      <span class="progress-active">2. Payment</span>
+      <span>3. Confirmation</span>
+    </div>
+
+    <h3 class="payment-heading">Payment method</h3>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="UPI" checked>
+      <span class="payment-option-content">
+        <strong>📱 UPI</strong>
+        <small>Google Pay, PhonePe, Paytm and more</small>
+      </span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="Card">
+      <span class="payment-option-content">
+        <strong>💳 Credit / Debit Card</strong>
+        <small>Visa, Mastercard and RuPay</small>
+      </span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="Cash on Pickup">
+      <span class="payment-option-content">
+        <strong>🛍️ Pay at Pickup</strong>
+        <small>Pay when you collect your order</small>
+      </span>
+    </label>
+
+    <div class="payment-summary">
+      <span>Total payable</span>
+      <strong id="paymentTotal">₹0</strong>
+    </div>
+
+    <button class="pay-button" onclick="confirmPayment()">Place my order →</button>
+    <p class="payment-footer">♡ Thank you for choosing Brew & Byte</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
